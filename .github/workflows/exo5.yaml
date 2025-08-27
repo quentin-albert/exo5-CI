@@ -53,7 +53,7 @@ jobs:
           name: build-${{ matrix.os }}-node${{ matrix.version }}
           path: dist/
 
-  conditional-job:
+  condition:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: build
@@ -64,7 +64,7 @@ jobs:
           name: build-ubuntu-latest-node18
           path: ./artifact
 
-      - name: Simulate deployment
+      - name: deploiment
         run: |
-          echo "Deploying build from Ubuntu + Node 18"
+          echo "Deploiment Ubuntu + Node 18"
           ls ./artifact

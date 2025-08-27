@@ -1,12 +1,13 @@
 {
-  "name": "exo5-ci",
+  "name": "matrix-artifact-demo",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Projet Node.js pour tester GitHub Actions avec matrice et artefacts",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "build": "mkdir -p dist && cp src/index.js dist/app.js"
   },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": ""
+  "license": "MIT",
+  "dependencies": {}
 }
