@@ -34,11 +34,40 @@ jobs:
           - os: macos-latest
             version: 20
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: 
-          node-version : ${{ matrix.version }}
-      - run: npm ci
-      - run: npm run build --if-present
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.os }}-node${{ matrix.version }}
+          path: dist/
+
+  conditional-job:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    needs: build
+    steps:
+      - name: Download artifact (Ubuntu + Node 18)
+        uses: actions/download-artifact@v4
+        with:
+          name: build-ubuntu-latest-node18
+          path: ./artifact
+
+      - name: Simulate deployment
+        run: |
+          echo "Deploying build from Ubuntu + Node 18"
+          ls ./artifact
